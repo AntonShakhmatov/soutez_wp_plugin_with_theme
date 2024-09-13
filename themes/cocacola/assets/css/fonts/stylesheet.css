@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'TCCC-UnityText';
+    src: url('subset-TCCC-UnityText-Bold.eot');
+    src: url('subset-TCCC-UnityText-Bold.eot?#iefix') format('embedded-opentype'),
+        url('subset-TCCC-UnityText-Bold.woff2') format('woff2'),
+        url('subset-TCCC-UnityText-Bold.woff') format('woff'),
+        url('subset-TCCC-UnityText-Bold.ttf') format('truetype'),
+        url('subset-TCCC-UnityText-Bold.svg#TCCC-UnityText-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TCCC-UnityText';
+    src: url('subset-TCCC-UnityText-Regular.eot');
+    src: url('subset-TCCC-UnityText-Regular.eot?#iefix') format('embedded-opentype'),
+        url('subset-TCCC-UnityText-Regular.woff2') format('woff2'),
+        url('subset-TCCC-UnityText-Regular.woff') format('woff'),
+        url('subset-TCCC-UnityText-Regular.ttf') format('truetype'),
+        url('subset-TCCC-UnityText-Regular.svg#TCCC-UnityText-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TCCC-UnityHeadline';
+    src: url('subset-TCCC-UnityHeadline-Bold.eot');
+    src: url('subset-TCCC-UnityHeadline-Bold.eot?#iefix') format('embedded-opentype'),
+        url('subset-TCCC-UnityHeadline-Bold.woff2') format('woff2'),
+        url('subset-TCCC-UnityHeadline-Bold.woff') format('woff'),
+        url('subset-TCCC-UnityHeadline-Bold.ttf') format('truetype'),
+        url('subset-TCCC-UnityHeadline-Bold.svg#TCCC-UnityHeadline-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TCCC-UnityHeadline';
+    src: url('subset-TCCC-UnityHeadline-Medium.eot');
+    src: url('subset-TCCC-UnityHeadline-Medium.eot?#iefix') format('embedded-opentype'),
+        url('subset-TCCC-UnityHeadline-Medium.woff2') format('woff2'),
+        url('subset-TCCC-UnityHeadline-Medium.woff') format('woff'),
+        url('subset-TCCC-UnityHeadline-Medium.ttf') format('truetype'),
+        url('subset-TCCC-UnityHeadline-Medium.svg#TCCC-UnityHeadline-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

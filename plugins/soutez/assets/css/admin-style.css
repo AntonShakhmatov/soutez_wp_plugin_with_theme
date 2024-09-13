@@ -1,0 +1,16 @@
+.table-container {
+    border: 1px solid black;
+    width: 200px;
+    height: 60px;
+    background: #cfc;
+    text-align: center;
+    display: none;
+    position:absolute;
+    left:40vh;
+    top:40vh;
+  }
+
+  textarea#template {
+    width:75%;
+    height:20vh;
+  }

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270" height="270" viewBox="0 0 270 270">
+  <g id="icon-step2" transform="translate(-8141 -3165)">
+    <rect id="Rectangle_380" data-name="Rectangle 380" width="270" height="270" transform="translate(8141 3165)" fill="rgba(255,255,255,0)"/>
+    <g id="Zapoj_se" data-name="Zapoj se" transform="translate(6900 680)">
+      <g id="Rectangle_26" data-name="Rectangle 26" transform="translate(1306 2584)" fill="none" stroke="#f40000" stroke-width="14">
+        <rect width="140" height="94" rx="5" stroke="none"/>
+        <rect x="-7" y="-7" width="154" height="108" rx="12" fill="none"/>
+      </g>
+      <rect id="Rectangle_27" data-name="Rectangle 27" width="26" height="69" rx="5" transform="translate(1363 2549)" fill="#f40000"/>
+      <path id="Polygon_1" data-name="Polygon 1" d="M32.031,5.182a5,5,0,0,1,7.939,0L65.841,38.96A5,5,0,0,1,61.872,47H10.128a5,5,0,0,1-3.969-8.04Z" transform="translate(1412 2639) rotate(180)" fill="#f40000"/>
+      <path id="Rectangle_28" data-name="Rectangle 28" d="M5,0H199a5,5,0,0,1,5,5V5a10,10,0,0,1-10,10H10A10,10,0,0,1,0,5V5A5,5,0,0,1,5,0Z" transform="translate(1274 2677)" fill="#f40000"/>
+    </g>
+  </g>
+</svg>
