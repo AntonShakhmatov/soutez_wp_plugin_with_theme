@@ -12,7 +12,6 @@ require_once 'email_functions.php';
 
 class Update
 {
-    private $table_name_main_mails;
     private $competition_type;
     private $competition_id;
     private $draw_id;
@@ -493,9 +492,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition2()
     {
-        global $wpdb;
-        $field_name = 'quantity2';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -510,9 +506,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition3()
     {
-        global $wpdb;
-        $field_name = 'quantity3';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -527,9 +520,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition4()
     {
-        global $wpdb;
-        $field_name = 'quantity4';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -544,9 +534,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition5()
     {
-        global $wpdb;
-        $field_name = 'quantity5';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -561,9 +548,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition6()
     {
-        global $wpdb;
-        $field_name = 'quantity6';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -578,9 +562,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition7()
     {
-        global $wpdb;
-        $field_name = 'quantity7';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -595,9 +576,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition8()
     {
-        global $wpdb;
-        $field_name = 'quantity8';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -612,9 +590,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition9()
     {
-        global $wpdb;
-        $field_name = 'quantity9';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -629,9 +604,6 @@ class Update
 
     public function changeQuantityOfDaysCompetition10()
     {
-        global $wpdb;
-        $field_name = 'quantity10';
-        $field_name_total = 'total_quantity';
         $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
@@ -693,49 +665,19 @@ class Update
 
     public function createPageWithEndpoint()
     {
-
-        //        $PageGuid = get_option('siteurl') . "/index.php/" . $this->name . $this->surname . $this->kontakt_id . $this->shortToken;
+        // $PageGuid = get_option('siteurl') . "/index.php/" . $this->name . $this->surname . $this->kontakt_id . $this->shortToken;
         $PageGuid = get_option('siteurl') . "/index.php/" . $this->shortToken;
 
-        $post_content = '
-        <style>
-            header.wp-block-template-part {
-                display: none;
-            }
-            footer.wp-block-template-part {
-                display: none;
-            }
-        </style>
-        <form id="featured_upload" method="post" action="post-form.php" enctype="multipart/form-data">
-            <input type="hidden" name="competition_type" value="' . $this->competition_type . '">
-            
-            <input type="hidden" name="kontakt_id" value="' . $this->kontakt_id . '">
-            
-            <input type="hidden" name="shortToken" value="' . $this->shortToken . '">
-            
-            <label>Your name</label>
-            <input type="text" name="your-name" autocomplete="name" value="' . $this->name . '" required>
-        
-            <label>Your surname</label>
-            <input type="text" name="your-surname" autocomplete="name" value="' . $this->surname . '" required>
-            
-            <label>Vyhral jste</label>
-            <input type="text" name="your-vyhra" autocomplete="prize" value="' . $this->vyhra . '" required>
-        
-            <label>Your address</label>
-            <input type="text" name="your-address" autocomplete="address" required>
-        
-            <input type="file" name="your-file" id="your-file" multiple="false" />
-            <input type="hidden" name="submit_action" value="upload" />
-            <input id="submit_action" name="submit_action" type="submit" value="Upload" />
-        </form>
-        ';
+
+        // Буферизация вывода для получения HTML-шаблона как строки
+        ob_start();
+        include 'create_page.php'; // Путь к файлу шаблона
+        $post_content = ob_get_clean();
 
         $my_post = array(
             'post_title'     => 'Form for ' . $this->name . ' ' . $this->surname,
             'post_type'      => 'page',
             'post_name'      => $this->shortToken,
-            //            'post_name'      => $this->name . $this->surname . $this->kontakt_id . $this->shortToken,
             'post_content'   => $post_content,
             'post_status'    => 'publish',
             'comment_status' => 'closed',
@@ -762,40 +704,12 @@ class Update
     {
         $kontakt_id = selectKontaktIdFromKontaktniUdajeVitezeCopie($jmeno, $prijmeni, $email);
 
-        //        $PageGuid = get_option('siteurl') . "/index.php" . "/my-page-" . $jmeno . $prijmeni . $kontakt_id . $this->shortToken;
         $PageGuid = get_option('siteurl') . "/index.php/" . $this->shortToken;
 
-        $post_content = '
-        <style>
-            header.wp-block-template-part {
-                display: none;
-            }
-            footer.wp-block-template-part {
-                display: none;
-            }
-        </style>
-        <form id="featured_upload" method="post" action="post-form.php" enctype="multipart/form-data">
-            <input type="hidden" name="competition_type" value="' . $competition_type . '">
-            
-            <input type="hidden" name="kontakt_id" value="' . $kontakt_id . '">
-            
-            <label>Your name</label>
-            <input type="text" name="your-name" autocomplete="name" value="' . $jmeno . '" required>
-        
-            <label>Your surname</label>
-            <input type="text" name="your-surname" autocomplete="name" value="' . $prijmeni . '" required>
-            
-            <label>Vyhral jste</label>
-            <input type="text" name="your-vyhra" autocomplete="prize" value="' . $vyhra . '" required>
-        
-            <label>Your address</label>
-            <input type="text" name="your-address" autocomplete="address" required>
-        
-            <input type="file" name="your-file" id="your-file" multiple="false" />
-            <input type="hidden" name="submit_action" value="upload" />
-            <input id="submit_action" name="submit_action" type="submit" value="Upload" />
-        </form>
-        ';
+        // Буферизация вывода для получения HTML-шаблона как строки
+        ob_start();
+        include 'create_day_page.php'; // Путь к файлу шаблона
+        $post_content = ob_get_clean();
 
         $my_post = array(
             'post_title'     => 'Form for ' . $jmeno . ' ' . $prijmeni,
@@ -829,37 +743,11 @@ class Update
     {
         $PageGuid = get_option('siteurl') . "/index.php/" . $this->shortToken;
         //        $PageGuid = get_option('siteurl') . "/index.php" . "/my-page-" . $this->main_name . '-' . $this->main_surname . '-' . $this->main_kontakt_id;
-        $post_content = '
-        <style>
-            header.wp-block-template-part {
-                display: none;
-            }
-            footer.wp-block-template-part {
-                display: none;
-            }
-        </style>
-        <form id="featured_upload" method="post" action="post-form.php" enctype="multipart/form-data">
-        
-            <input type="hidden" name="competition_type" value="' . $this->competition_type . '">
-            
-            <input type="hidden" name="kontakt_id" value="' . $this->main_kontakt_id . '">
-            <label>Your name</label>
-            <input type="text" name="your-name" autocomplete="name" value="' . $this->main_name . '" required>
-        
-            <label>Your surname</label>
-            <input type="text" name="your-surname" autocomplete="name" value="' . $this->main_surname . '" required>
-            
-            <label>Your prize</label>
-            <input type="text" name="your-vyhra" autocomplete="vyhra" value="' . $this->vyhra_hlavni . '" required>
-        
-            <label>Your address</label>
-            <input type="text" name="your-address" autocomplete="address" required>
-        
-            <input type="file" name="your-file" id="your-file" multiple="false" />
-            <input type="hidden" name="submit_action" value="upload" />
-            <input id="submit_action" name="submit_action" type="submit" value="Upload" />
-        </form>
-        ';
+        // Буферизация вывода для получения HTML-шаблона как строки
+
+        ob_start();
+        include 'create_main_page.php'; // Путь к файлу шаблона
+        $post_content = ob_get_clean();
 
         $my_post = array(
             'post_title'     => 'Form for ' . $this->main_name . ' ' . $this->main_surname,
