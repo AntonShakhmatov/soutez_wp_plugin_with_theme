@@ -7,34 +7,17 @@ require_once SOUTEZ_DIR . 'classes/vitez/vitez.php';
 require_once SOUTEZ_DIR . 'forms/post-form.php';
 require_once SOUTEZ_DIR . 'smtp/custom-smtp-config.php';
 require_once SOUTEZ_DIR . 'smtp/smtp-settings.php';
+require_once 'db_functions.php';
+require_once 'email_functions.php';
 
 class Update
 {
-    private $table_name;
-    private $table_name_denni;
-    private $table_name_hlavni;
-    private $table_name_2;
-    private $table_name_3;
-    private $table_name_4;
-    private $table_name_winner_copie;
-    private $table_name_winner_denni;
-    private $table_name_winner_main;
-    private $table_name_days_mails;
     private $table_name_main_mails;
-    private $table_name_5;
-    private $table_name_6;
-    private $table_name_7;
-    private $table_name_8;
-    private $table_name_9;
-    private $table_name_10;
-    private $table_name_11;
     private $competition_type;
     private $competition_id;
     private $draw_id;
     private $random_winner;
     private $random_winner_denni;
-    private $random_winner_hlavni;
-    private $viteze;
     private $vyhra;
     private $vyhra_denni;
     private $vyhra_denni2;
@@ -50,82 +33,65 @@ class Update
     private $vyhra_mail;
     private $template_id;
     private $email;
-    private $copie_email;
     private $api_key;
     private $api;
     private $vitez;
     private $name;
-    private $copie_name;
     private $surname;
-    private $copie_surname;
     private $kontakt_id;
-    private $copie_kontakt_id;
     private $main_kontakt_id;
     private $main_name;
     private $main_surname;
     private $main_email;
     private $token;
     private $shortToken;
+    private $copie_email;
+    private $random_winner_hlavni;
+    private $viteze;
+    private $copie_name;
+    private $copie_surname;
+    private $copie_kontakt_id;
 
     public function __construct($competition_type)
     {
-        global $wpdb;
-        $this->table_name = $wpdb->prefix . 'aktivny_soutezi';
-        $this->table_name_denni = $wpdb->prefix . 'denni_soutezi';
-        $this->table_name_hlavni = $wpdb->prefix . 'hlavni_soutezi';
-        $this->table_name_2 = $wpdb->prefix . 'kontaktni_udaje_viteze';
-        $this->table_name_3 = $wpdb->prefix . 'kontaktni_udaje';
-        $this->table_name_4 = $wpdb->prefix . 'typ_souteze_mails';
-        $this->table_name_winner_copie = $wpdb->prefix . 'kontaktni_udaje_viteze_copie';
-        $this->table_name_winner_denni = $wpdb->prefix . 'kontaktni_udaje_viteze_denni';
-        $this->table_name_winner_main = $wpdb->prefix . 'kontaktni_udaje_viteze_main';
-        $this->table_name_days_mails = $wpdb->prefix . 'typ_souteze_days_mails';
-        $this->table_name_main_mails = $wpdb->prefix . 'typ_souteze_main_mails';
-        $this->table_name_5 = $wpdb->prefix . 'typ_souteze';
-        $this->table_name_6 = $wpdb->prefix . 'prize_draw';
-        $this->table_name_7 = $wpdb->prefix . 'uctenka_viteze';
-        $this->table_name_8 = $wpdb->prefix . 'kontaktni_udaje_denni';
-        $this->table_name_9 = $wpdb->prefix . 'kontaktni_udaje_hlavni';
-        $this->table_name_10 = $wpdb->prefix . 'viteze';
-        $this->table_name_11 = $wpdb->prefix . 'kontaktni_udaje_tydenni';
         $this->competition_type = $competition_type;
-        $this->competition_id = $wpdb->get_var("SELECT competition_id FROM {$this->table_name_5} WHERE competition_type = '{$this->competition_type}'");
-        $this->draw_id = $wpdb->get_var("SELECT draw_id FROM {$this->table_name_6} WHERE competition_type = '{$this->competition_type}'");
-        $this->random_winner = $wpdb->get_results("SELECT * FROM {$this->table_name_11} ORDER BY RAND() LIMIT 1");
-        $this->random_winner_denni = $wpdb->get_results("SELECT * FROM {$this->table_name_8} ORDER BY RAND() LIMIT 1");
-        $this->random_winner_hlavni = $wpdb->get_results("SELECT * FROM {$this->table_name_9} ORDER BY RAND() LIMIT 1");
-        $this->viteze = $wpdb->get_results("SELECT * FROM {$this->table_name_2} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra = $wpdb->get_var("SELECT vyhra FROM {$this->table_name} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni = $wpdb->get_var("SELECT vyhra FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni2 = $wpdb->get_var("SELECT vyhra2 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni3 = $wpdb->get_var("SELECT vyhra3 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni4 = $wpdb->get_var("SELECT vyhra4 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni5 = $wpdb->get_var("SELECT vyhra5 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni6 = $wpdb->get_var("SELECT vyhra6 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni7 = $wpdb->get_var("SELECT vyhra7 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni8 = $wpdb->get_var("SELECT vyhra8 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni9 = $wpdb->get_var("SELECT vyhra9 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_denni10 = $wpdb->get_var("SELECT vyhra10 FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_hlavni = $wpdb->get_var("SELECT vyhra FROM {$this->table_name_hlavni} WHERE competition_type = '{$this->competition_type}'");
-        $this->vyhra_mail = $wpdb->get_var("SELECT template FROM {$this->table_name_4} WHERE draw_id = '{$this->draw_id}'");
-        $this->template_id = $wpdb->get_var("SELECT ecomail_template_id FROM {$this->table_name_4} WHERE draw_id = '{$this->draw_id}'");
-        $this->email = $wpdb->get_var("SELECT email FROM {$this->table_name_2} WHERE competition_type = '{$this->competition_type}'");
-        $this->copie_email = $wpdb->get_var("SELECT email FROM {$this->table_name_winner_copie} WHERE competition_type = '{$this->competition_type}'");
+        $this->competition_id = getCompetitionIdFromTypSouteze($this->competition_type);
+        $this->draw_id = getDrawIdFromPrizeDraw($this->competition_type);
+        $this->random_winner = getAllFromKontaktniUdajeTydenni();
+        $this->random_winner_denni = getAllFromKontaktniUdajeDenni();
+        $this->random_winner_hlavni = getAllFromKontaktniUdajeHlavni();
+        $this->viteze = getAllFromKontaktniUdajeViteze($competition_type);
+        $this->vyhra = getVyhraFromAktivnySoutezi($competition_type);
+        $this->vyhra_denni = getVyhraFromDenniSoutezi($competition_type);
+        $this->vyhra_denni2 = getVyhraFromDenniSoutezi2($competition_type);
+        $this->vyhra_denni3 = getVyhraFromDenniSoutezi3($competition_type);
+        $this->vyhra_denni4 = getVyhraFromDenniSoutezi4($competition_type);
+        $this->vyhra_denni5 = getVyhraFromDenniSoutezi5($competition_type);
+        $this->vyhra_denni6 = getVyhraFromDenniSoutezi6($competition_type);
+        $this->vyhra_denni7 = getVyhraFromDenniSoutezi7($competition_type);
+        $this->vyhra_denni8 = getVyhraFromDenniSoutezi8($competition_type);
+        $this->vyhra_denni9 = getVyhraFromDenniSoutezi9($competition_type);
+        $this->vyhra_denni10 = getVyhraFromDenniSoutezi10($competition_type);
+        $this->vyhra_hlavni = getVyhraFromHlavniSoutezi($competition_type);
+        $this->vyhra_mail = getTemplateFromTypSoutezeMails($this->draw_id);
+        $this->template_id = getEcomailTemplateIdFromTypSoutezeMails($this->draw_id);
+        $this->email = getEmailFromKontaktniUdajeViteze($competition_type);
+        $this->copie_email = getEmailFromKontaktniUdajeVitezeCopie($competition_type);
 
         $this->api_key = get_option('ecomail_api_key');
         $this->api = new EcomailApi($this->api_key);
 
         $this->vitez = new Vitez();
-        $this->name = $wpdb->get_var("SELECT jmeno FROM {$this->table_name_2} WHERE competition_type = '{$this->competition_type}'");
-        $this->surname = $wpdb->get_var("SELECT prijmeni FROM {$this->table_name_2} WHERE competition_type = '{$this->competition_type}'");
-        $this->kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM {$this->table_name_2} WHERE competition_type = '{$this->competition_type}'");
-        $this->copie_name = $wpdb->get_var("SELECT jmeno FROM {$this->table_name_winner_copie} WHERE competition_type = '{$this->competition_type}'");
-        $this->copie_surname = $wpdb->get_var("SELECT prijmeni FROM {$this->table_name_winner_copie} WHERE competition_type = '{$this->competition_type}'");
-        $this->copie_kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM {$this->table_name_winner_copie} WHERE competition_type = '{$this->competition_type}'");
-        $this->main_kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM {$this->table_name_winner_main} WHERE competition_type = '{$this->competition_type}'");
-        $this->main_name = $wpdb->get_var("SELECT jmeno FROM {$this->table_name_winner_main} WHERE competition_type = '{$this->competition_type}'");
-        $this->main_surname = $wpdb->get_var("SELECT prijmeni FROM {$this->table_name_winner_main} WHERE competition_type = '{$this->competition_type}'");
-        $this->main_email = $wpdb->get_var("SELECT email FROM {$this->table_name_winner_main} WHERE competition_type = '{$this->competition_type}'");
+        $this->name = getNameFromKontaktniUdajeViteze($competition_type);
+        $this->surname = getSurnameFromKontaktniUdajeViteze($competition_type);
+        $this->kontakt_id = getKontaktIdFromKontaktniUdajeViteze($competition_type);
+        $this->copie_name = getCopieNameFromKontaktniUdajeVitezeCopie($competition_type);
+        $this->copie_surname = getCopieSurnameFromKontaktniUdajeVitezeCopie($competition_type);
+        $this->copie_kontakt_id = getCopieKontaktIdFromKontaktniUdajeVitezeCopie($competition_type);
+        $this->main_kontakt_id = getKontaktIdFromKontaktniUdajeVitezeMain($competition_type);
+        $this->main_name = getNameFromKontaktniUdajeVitezeMain($competition_type);
+        $this->main_surname = getSurnameFromKontaktniUdajeVitezeMain($competition_type);
+        $this->main_email = getEmailFromKontaktniUdajeVitezeMain($competition_type);
 
         $this->token = wp_generate_password(20, false, false); // Генерация случайного токена
         $this->shortToken = substr($this->token, 0, 15);
@@ -135,25 +101,14 @@ class Update
     {
         global $wpdb;
         $competition_type = str_replace(" ", "_", $this->competition_type);
-        $existing_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM `$this->table_name_5` WHERE competition_type = %s", $competition_type));
+        $existing_record = selectAllFromTypSouteze($competition_type);
 
         if ($existing_record) {
             //Update new entry
-            $wpdb->update(
-                $this->table_name_5,
-                array(
-                    'competition_type' => $competition_type,
-                ),
-                array('competition_id' => $this->competition_id)
-            );
+            updateCompetitionIdForTypSouteze($competition_type, $this->competition_id);
         } else {
             //Insert new entryaddCompetitionTypeWithoutTimer
-            $wpdb->insert(
-                $this->table_name_5,
-                array(
-                    'competition_type' => $competition_type,
-                )
-            );
+            insertCompetitionTypeForTypSouteze($competition_type);
         }
     }
 
@@ -166,54 +121,26 @@ class Update
         $zahajeni = $_POST["zahajeni"];
         $konec = $_POST["konec"];
 
-        $results = $wpdb->get_results("SELECT * FROM $this->table_name_3");
+        $results = getAllFromKontaktniUdaje();
 
-        $existing_prize = $wpdb->get_var($wpdb->prepare("SELECT * FROM `$this->table_name_6` WHERE competition_type = %s", $this->competition_type));
+        $existing_prize = selectAllFromPrizeDraw($this->competition_type);
 
-        $existing_competition = $wpdb->get_var($wpdb->prepare("SELECT * FROM `$this->table_name` WHERE competition_type = %s", $this->competition_type));
+        $existing_competition = selectAllFromAktivnySoutezi($this->competition_type);
 
-        $existing_vyhra = $wpdb->get_var($wpdb->prepare("SELECT `vyhra` FROM `$this->table_name` WHERE competition_type = %s", $this->competition_type));
+        $existing_vyhra = selectVyhraFromAltivnySoutezi($this->competition_type);
 
         if ($existing_prize) {
             //Update an existing entry
-            $wpdb->update(
-                $this->table_name_6,
-                array(
-                    'vyhra' => $vyhra,
-                    'quantity' => $quantity,
-                    'competition_type' => $this->competition_type
-                ),
-                array(
-                    'competition_id' => $this->competition_id,
-                )
-            );
+            updateCompetitionIdInPrizeDraw($vyhra, $quantity, $this->competition_type, $this->competition_id);
         } else {
             //Insert new entry
-            $wpdb->insert(
-                $this->table_name_6,
-                array(
-                    'competition_id' => $this->competition_id,
-                    'competition_type' => $this->competition_type,
-                    'vyhra' => $vyhra,
-                    'quantity' => $quantity
-                )
-            );
+            insertCompetitionIdCompetitionTypeVyhraQuantityInPrizeDraw($this->competition_id, $this->competition_type, $vyhra, $quantity);
         }
 
         $draw_id = $wpdb->insert_id;
 
         if (!$existing_competition) {
-            $wpdb->insert(
-                $this->table_name,
-                array(
-                    'draw_id' => $draw_id,
-                    'competition_type' => $this->competition_type,
-                    'vyhra' => $vyhra,
-                    'quantity' => $quantity,
-                    'zacatek' => $zahajeni,
-                    'konec' => $konec
-                )
-            );
+            insertDrawIdCompetitionTypeVyhraQuantityZacatekKonecInAktivnySoutezi($draw_id, $this->competition_type, $vyhra, $quantity, $zahajeni, $konec);
         } // Нужно добавить функцицю обновления по примеру нижней..
 
         if ($existing_vyhra) {
@@ -228,25 +155,15 @@ class Update
     public function updateWeekPrize($quantity, $vyhra)
     {
         global $wpdb;
-        $wpdb->update(
-            $this->table_name,
-            array(
-                'quantity' => $quantity,
-                'vyhra' => $vyhra,
-            ),
-            array(
-                'competition_type' => $this->competition_type,
-            )
-        );
+        updateCompetitionTypeInAktivnySoutezi($quantity, $vyhra, $this->competition_type);
     }
 
     public function divideByDayTime()
     {
-        global $wpdb;
-        $existing_denni_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM `$this->table_name_denni` WHERE competition_type = %s", $this->competition_type));
-        $zahajeni = $wpdb->get_var("SELECT zacatek FROM `$this->table_name` WHERE competition_type = '$this->competition_type'");
-        $konec = $wpdb->get_var("SELECT konec FROM `$this->table_name` WHERE competition_type = '$this->competition_type'");
-        $active_competition_id = $wpdb->get_var("SELECT active_competition_id FROM `$this->table_name` WHERE competition_type = '$this->competition_type'");
+        $existing_denni_record = selectAllFromDenniSoutezi($this->competition_type);
+        $zahajeni = selectZacatekFromAktivnySoutezi($this->competition_type);
+        $konec = selectKonecFromAktivnySoutezi($this->competition_type);
+        $active_competition_id = selectActiveCompetitionIdFromAktivnySoutezi($this->competition_type);
 
         $start = new DateTime($zahajeni);
         $end = new DateTime($konec);
@@ -260,27 +177,9 @@ class Update
             $endOfDay = $date->format('Y-m-d 23:59:59');
             if ($existing_denni_record) {
                 //Update an existing entry
-                $wpdb->update(
-                    $this->table_name_denni,
-                    array(
-                        'zacatek' => $startOfDay,
-                        'konec' => $endOfDay,
-                    ),
-                    array(
-                        'active_competition_id' => $active_competition_id,
-                    )
-                );
+                updateActiveCompetitionIdFromDenniSoutezi($startOfDay, $endOfDay, $active_competition_id);
             } else {
-                $wpdb->insert(
-                    $this->table_name_denni,
-                    array(
-                        'active_competition_id' => $active_competition_id,
-                        'competition_type' => $this->competition_type . '_' . $i . '_den',
-                        'competition_name' => $i . '_den_' . $this->competition_type . '_' . $i . '_den',
-                        'zacatek' => $startOfDay,
-                        'konec' => $endOfDay
-                    )
-                );
+                insertActiveCompetitionIdCompetitionTypeCompetitionNameZacatekKonecInDenniSoutezi($active_competition_id, $this->competition_type, $i, $startOfDay, $endOfDay);
             }
             $i++;
         }
@@ -288,47 +187,23 @@ class Update
 
     public function divideByAllTime()
     {
-        global $wpdb;
-        $existing_hlavni_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM `$this->table_name_hlavni` WHERE competition_type = %s", 'hlavni_losovani_' . $this->competition_type));
+        $existing_hlavni_record = selectAllFromHlavniSoutezi($this->competition_type);
 
         // Составление SQL-запроса для выбора самого первого значения из поля 'zacatek' и самого последнего значения из поля 'konec'
-        $query = "SELECT MIN(zacatek) as first_zacatek, MAX(konec) as last_konec FROM $this->table_name";
-        $active_competition_id = $wpdb->get_var("SELECT active_competition_id FROM `$this->table_name` WHERE competition_type = '$this->competition_type'");
+        $result = selectMinZacatekFromAktivnySoutezi($this->competition_type);
+        $active_competition_id = selectActiveCompetitionId($this->competition_type);
 
         // Выполнение запроса и получение результата
-        $result = $wpdb->get_row($query);
 
         $firstZacatek = $result->first_zacatek;
         $lastKonec = $result->last_konec;
 
         if ($existing_hlavni_record) {
             //Update an existing entry
-            $wpdb->update(
-                $this->table_name_hlavni,
-                array(
-                    'active_competition_id' => $active_competition_id,
-                    // 'competition_type' => $this->competition_type,
-                    'competition_name' => 'Hlavní losování',
-                    'zacatek' => $firstZacatek,
-                    'konec' => $lastKonec,
-                ),
-                array(
-                    'zacatek' => $firstZacatek,
-                    'konec' => $lastKonec,
-                )
-            );
+            updateZacatekKonecInHlavniSoutezi($active_competition_id, $this->competition_type, $firstZacatek, $lastKonec);
         } else {
             //Insert new entry
-            $wpdb->insert(
-                $this->table_name_hlavni,
-                array(
-                    'active_competition_id' => $active_competition_id,
-                    'competition_type' => 'hlavni_losovani_' . $this->competition_type,
-                    'competition_name' => 'Hlavní losování',
-                    'zacatek' => $firstZacatek,
-                    'konec' => $lastKonec
-                )
-            );
+            insertActiveCompetitionIdCompetitionTypeCompetitionNameZacatekKonec($active_competition_id, $this->competition_type, $firstZacatek, $lastKonec);
         }
     }
 
@@ -337,77 +212,52 @@ class Update
     {
         global $wpdb;
         // Удаляем записи из таблицы wp_denni_soutezi, связанные с записями в wp_aktivny_soutezi
-        $wpdb->query("DELETE FROM {$wpdb->prefix}denni_soutezi WHERE active_competition_id IN (SELECT active_competition_id FROM {$wpdb->prefix}aktivny_soutezi WHERE competition_type = '{$this->competition_type}')");
-
+        deleteFromDenniSoutezi($this->competition_type);
         // Удаляем записи из таблицы wp_hlavni_soutezi, связанные с записями в wp_aktivny_soutezi и wp_prize_draw
-        $wpdb->query("DELETE FROM {$wpdb->prefix}hlavni_soutezi WHERE active_competition_id IN (SELECT active_competition_id FROM {$wpdb->prefix}aktivny_soutezi WHERE competition_type = '{$this->competition_type}')");
-        $wpdb->query("DELETE FROM {$wpdb->prefix}hlavni_soutezi WHERE active_competition_id IN (SELECT draw_id FROM {$wpdb->prefix}prize_draw WHERE competition_type = '{$this->competition_type}')");
-
+        deleteFromHlavniSouteziSelectActiveCompetitionId($this->competition_type);
+        deleteFromHlavniSouteziSelectDrawId($this->competition_type);
         // Удаляем записи из таблицы wp_aktivny_soutezi
-        $wpdb->delete($this->table_name, array('competition_type' => $this->competition_type));
-
+        deleteCompetitionTypeFromAktivnySoutezi($this->competition_type);
         // Удаляем записи из таблицы wp_prize_draw
-        $wpdb->delete($this->table_name_6, array('competition_type' => $this->competition_type));
+        deleteCompetitionTypeFromPrizeDraw($this->competition_type);
     }
 
     //Denni soutezi
     public function removeByDayTime()
     {
-        global $wpdb;
         //Удаляем записи из таблицы wp_denni_soutezi, где active_competition_id не существует в таблице wp_aktivny_soutezi
-        $wpdb->query("DELETE FROM {$wpdb->prefix}denni_soutezi WHERE active_competition_id NOT IN (SELECT active_competition_id FROM {$wpdb->prefix}aktivny_soutezi)");
+        deleteFromDenniSouteziSelectActiveCompetitionId();
     }
 
     //hlavni soutezi
     public function removeByAllTime()
     {
-        global $wpdb;
         // Составление SQL-запроса для выбора самого первого значения из поля 'zacatek' и самого последнего значения из поля 'konec'
-        $query = "SELECT MIN(zacatek) as first_zacatek, MAX(konec) as last_konec FROM $this->table_name";
-        $active_competition_id = $wpdb->get_var("SELECT active_competition_id FROM `$this->table_name` WHERE competition_type = '$this->competition_type'");
-
-        // Выполнение запроса и получение результата
-        $result = $wpdb->get_row($query);
+        $result = selectMinZacatekFromAktivnySoutezi($this->competition_type);
+        $active_competition_id = selectActiveCompetitionId($this->competition_type);
 
         $firstZacatek = $result->first_zacatek;
         $lastKonec = $result->last_konec;
-        $wpdb->update(
-            $this->table_name_hlavni,
-            array(
-                'active_competition_id' => $active_competition_id,
-                'competition_type' => $this->competition_type,
-                'competition_name' => 'Hlavní losování',
-                'zacatek' => $firstZacatek,
-                'konec' => $lastKonec,
-            ),
-            array(
-                'zacatek' => $firstZacatek,
-                'konec' => $lastKonec,
-            )
-        );
+
+        updateZacatekKonecInHlavniSoutezi($active_competition_id, $this->competition_type, $firstZacatek, $lastKonec);
     }
 
     //Losování menu function tydenni
     public function insertDatabase()
     {
-        global $wpdb;
-        $wpdb->insert(
-            $this->table_name_2,
-            array(
-                // 'competition_id' => $this->competition_id,
-                'kontakt_id' => $this->random_winner[0]->kontakt_id,
-                'vyhra' => $this->vyhra,
-                'competition_type' => $this->competition_type,
-                'jmeno' => $this->random_winner[0]->jmeno,
-                'prijmeni' => $this->random_winner[0]->prijmeni,
-                'telefon' => $this->random_winner[0]->telefon,
-                'email' => $this->random_winner[0]->email,
-                'psc' => $this->random_winner[0]->psc,
-                'datum_nakupu' => $this->random_winner[0]->datum_nakupu,
-                'cas_nakupu' => $this->random_winner[0]->cas_nakupu,
-                'cena_nakupu' => $this->random_winner[0]->cena_nakupu,
-                'cas_plneni' => $this->random_winner[0]->cas_plneni
-            )
+        insertIntoKontaktniUdajeViteze(
+            $this->random_winner[0]->kontakt_id,
+            $this->vyhra,
+            $this->competition_type,
+            $this->random_winner[0]->jmeno,
+            $this->random_winner[0]->prijmeni,
+            $this->random_winner[0]->telefon,
+            $this->random_winner[0]->email,
+            $this->random_winner[0]->psc,
+            $this->random_winner[0]->datum_nakupu,
+            $this->random_winner[0]->cas_nakupu,
+            $this->random_winner[0]->cena_nakupu,
+            $this->random_winner[0]->cas_plneni
         );
     }
 
@@ -415,28 +265,24 @@ class Update
     public function updateDatabase()
     {
         global $wpdb;
-        $kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM $this->table_name_7 WHERE competition_type = '$this->competition_type'");
+        $kontakt_id = selectKontaktIdFromUctenkaViteze($this->competition_type);
         if ($kontakt_id == $this->random_winner[0]->kontakt_id) {
-            $kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM $this->table_name_7 WHERE competition_type = '$this->competition_type'");
-            $wpdb->query("DELETE FROM `$this->table_name_11` WHERE `kontakt_id` = $kontakt_id");
+            $kontakt_id = selectKontaktIdFromUctenkaViteze($this->competition_type);
+            deleteFromKontaktniUdajeTydenni($kontakt_id);
         }
-        $wpdb->update(
-            $this->table_name_2,
-            array(
-                'kontakt_id' => $this->random_winner[0]->kontakt_id,
-                'vyhra' => $this->vyhra,
-                'competition_type' => $this->competition_type,
-                'jmeno' => $this->random_winner[0]->jmeno,
-                'prijmeni' => $this->random_winner[0]->prijmeni,
-                'telefon' => $this->random_winner[0]->telefon,
-                'email' => $this->random_winner[0]->email,
-                'psc' => $this->random_winner[0]->psc,
-                'datum_nakupu' => $this->random_winner[0]->datum_nakupu,
-                'cas_nakupu' => $this->random_winner[0]->cas_nakupu,
-                'cena_nakupu' => $this->random_winner[0]->cena_nakupu,
-                'cas_plneni' => $this->random_winner[0]->cas_plneni
-            ),
-            array('competition_type' => $this->competition_type)
+        updateKontaktniUdajeViteze(
+            $this->random_winner[0]->kontakt_id,
+            $this->vyhra,
+            $this->competition_type,
+            $this->random_winner[0]->jmeno,
+            $this->random_winner[0]->prijmeni,
+            $this->random_winner[0]->telefon,
+            $this->random_winner[0]->email,
+            $this->random_winner[0]->psc,
+            $this->random_winner[0]->datum_nakupu,
+            $this->random_winner[0]->cas_nakupu,
+            $this->random_winner[0]->cena_nakupu,
+            $this->random_winner[0]->cas_plneni
         );
     }
 
@@ -467,20 +313,7 @@ class Update
                 $random_vyhra_denni = $vyhra_denni_array[array_rand($vyhra_denni_array)];
             }
 
-            $wpdb->insert($this->table_name_winner_denni, array(
-                'kontakt_id' => $winner->kontakt_id,
-                'vyhra' => $random_vyhra_denni,
-                'competition_type' => $this->competition_type,
-                'jmeno' => $winner->jmeno,
-                'prijmeni' => $winner->prijmeni,
-                'telefon' => $winner->telefon,
-                'email' => $winner->email,
-                'psc' => $winner->psc,
-                'datum_nakupu' => $winner->datum_nakupu,
-                'cas_nakupu' => $winner->cas_nakupu,
-                'cena_nakupu' => $winner->cena_nakupu,
-                'cas_plneni' => $winner->cas_plneni
-            ));
+            insertIntoKontaktniUdajeVitezeDenni($winner->kontakt_id, $random_vyhra_denni, $this->competition_type, $winner->jmeno, $winner->prijmeni, $winner->telefon,  $winner->email, $winner->psc, $winner->datum_nakupu, $winner->cas_nakupu, $winner->cena_nakupu, $winner->cas_plneni);
         }
     }
 
@@ -489,10 +322,10 @@ class Update
     {
         global $wpdb;
         foreach ($this->random_winner_denni as $winner) {
-            $kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM $this->table_name_7 WHERE competition_type = '$this->competition_type'");
+            $kontakt_id = selectKontaktIdFromUctenkaViteze($this->competition_type);
             if ($kontakt_id == $winner->kontakt_id) {
-                $kontakt_id = $wpdb->get_var("SELECT kontakt_id FROM $this->table_name_7 WHERE competition_type = '$this->competition_type'");
-                $wpdb->query("DELETE FROM `$this->table_name_8` WHERE `kontakt_id` = $kontakt_id");
+                $kontakt_id = selectKontaktIdFromUctenkaViteze($this->competition_type);
+                deleteFromKontaktniUdajeDenni($kontakt_id);
             }
             // Создаем массив с непустыми переменными vyhra_denni
             $vyhra_denni_array = array_filter(array(
@@ -515,29 +348,7 @@ class Update
                 // Выбираем случайную непустую vyhra_denni из массива
                 $random_vyhra_denni = $vyhra_denni_array[array_rand($vyhra_denni_array)];
             }
-
-            $vitez_exist = $wpdb->get_results("SELECT * FROM $this->table_name_10");
-
-            $wpdb->update(
-                $this->table_name_winner_denni,
-                array(
-                    'kontakt_id' => $winner->kontakt_id,
-                    'vyhra' => $random_vyhra_denni,
-                    'competition_type' => $this->competition_type,
-                    'jmeno' => $winner->jmeno,
-                    'prijmeni' => $winner->prijmeni,
-                    'telefon' => $winner->telefon,
-                    'email' => $winner->email,
-                    'psc' => $winner->psc,
-                    'datum_nakupu' => $winner->datum_nakupu,
-                    'cas_nakupu' => $winner->cas_nakupu,
-                    'cena_nakupu' => $winner->cena_nakupu,
-                    'cas_plneni' => $winner->cas_plneni
-                ),
-                array(
-                    'competition_type' => $this->competition_type,
-                )
-            );
+            updateCompetitionTypeInKontaktniUdajeVitezeDenni($winner->kontakt_id, $random_vyhra_denni, $this->competition_type, $winner->jmeno, $winner->prijmeni, $winner->telefon, $winner->email, $winner->psc, $winner->datum_nakupu, $winner->cas_nakupu, $winner->cena_nakupu, $winner->cas_plneni);
         }
     }
 
@@ -545,10 +356,9 @@ class Update
     {
         global $wpdb;
         // Очистить таблицу перед копированием данных
-        $wpdb->query("TRUNCATE TABLE $this->table_name_winner_copie");
+        truncateTableKontaktniUdajeVitezeCopie();
 
-        //        $results = $wpdb->get_results("SELECT * FROM $this->table_name_2 ORDER BY cas_plneni ASC, RAND()");
-        $results = $wpdb->get_results("SELECT * FROM $this->table_name_winner_denni ORDER BY cas_plneni ASC, RAND()");
+        $results = selectAllFromKontaktniUdajeVitezeDenni();
         foreach ($results as $result) {
             $vyhra_denni_array = array_filter(array(
                 $this->vyhra_denni,
@@ -571,46 +381,39 @@ class Update
                 $random_vyhra_denni = $vyhra_denni_array[array_rand($vyhra_denni_array)];
             }
 
-            $wpdb->insert($this->table_name_winner_copie, array(
-                'kontakt_id' => $result->kontakt_id,
-                'vyhra' => $random_vyhra_denni,
-                //                'competition_type' => $this->competition_type,
-                'competition_type' => $result->competition_type,
-                //                'competition_type_asc_ordering' => $result->competition_type,
-                'jmeno' => $result->jmeno,
-                'prijmeni' => $result->prijmeni,
-                'telefon' => $result->telefon,
-                'email' => $result->email,
-                'psc' => $result->psc,
-                'datum_nakupu' => $result->datum_nakupu,
-                'cas_nakupu' => $result->cas_nakupu,
-                'cena_nakupu' => $result->cena_nakupu,
-                'cas_plneni' => $result->cas_plneni
-            ));
+            insertKontaktIdVyhraCompetitionTypeJmenoPrijmeniTelefonEmailPscDatumNakupuCasNakupuCenaNakupuCasPlneniIntoKontaktniUdajeVitezeCopie(
+                $result->kontakt_id,
+                $random_vyhra_denni,
+                $result->competition_type,
+                $result->jmeno,
+                $result->prijmeni,
+                $result->telefon,
+                $result->email,
+                $result->psc,
+                $result->datum_nakupu,
+                $result->cas_nakupu,
+                $result->cena_nakupu,
+                $result->cas_plneni
+            );
         }
     }
 
     //Losování menu function hlavni
     public function insertDatabaseHlavni()
     {
-        global $wpdb;
-        $wpdb->insert(
-            $this->table_name_winner_main,
-            array(
-                // 'competition_id' => $this->competition_id,
-                'kontakt_id' => $this->random_winner[0]->kontakt_id,
-                'vyhra' => $this->vyhra_hlavni,
-                'competition_type' => $this->competition_type,
-                'jmeno' => $this->random_winner[0]->jmeno,
-                'prijmeni' => $this->random_winner[0]->prijmeni,
-                'telefon' => $this->random_winner[0]->telefon,
-                'email' => $this->random_winner[0]->email,
-                'psc' => $this->random_winner[0]->psc,
-                'datum_nakupu' => $this->random_winner[0]->datum_nakupu,
-                'cas_nakupu' => $this->random_winner[0]->cas_nakupu,
-                'cena_nakupu' => $this->random_winner[0]->cena_nakupu,
-                'cas_plneni' => $this->random_winner[0]->cas_plneni
-            )
+        insertKontaktIdVyhraCompetitionTypeJmenoPrijmeniTelefonEmailPscDatumNakupuCasNakupuCenaNakupuCasPlneniIntoKontaktniUdajeVitezeMain(
+            $this->random_winner[0]->kontakt_id,
+            $this->vyhra_hlavni,
+            $this->competition_type,
+            $this->random_winner[0]->jmeno,
+            $this->random_winner[0]->prijmeni,
+            $this->random_winner[0]->telefon,
+            $this->random_winner[0]->email,
+            $this->random_winner[0]->psc,
+            $this->random_winner[0]->datum_nakupu,
+            $this->random_winner[0]->cas_nakupu,
+            $this->random_winner[0]->cena_nakupu,
+            $this->random_winner[0]->cas_plneni
         );
     }
 
@@ -618,24 +421,19 @@ class Update
     public function updateDatabaseHlavni()
     {
         global $wpdb;
-        $wpdb->update(
-            $this->table_name_winner_main,
-            array(
-                // 'competition_id' => $this->competition_id,
-                'kontakt_id' => $this->random_winner[0]->kontakt_id,
-                'vyhra' => $this->vyhra_hlavni,
-                'competition_type' => $this->competition_type,
-                'jmeno' => $this->random_winner[0]->jmeno,
-                'prijmeni' => $this->random_winner[0]->prijmeni,
-                'telefon' => $this->random_winner[0]->telefon,
-                'email' => $this->random_winner[0]->email,
-                'psc' => $this->random_winner[0]->psc,
-                'datum_nakupu' => $this->random_winner[0]->datum_nakupu,
-                'cas_nakupu' => $this->random_winner[0]->cas_nakupu,
-                'cena_nakupu' => $this->random_winner[0]->cena_nakupu,
-                'cas_plneni' => $this->random_winner[0]->cas_plneni
-            ),
-            array('competition_type' => $this->competition_type)
+        updateCompetitionTypeInKontaktniUdajeVitezeMain(
+            $this->random_winner[0]->kontakt_id,
+            $this->vyhra_hlavni,
+            $this->competition_type,
+            $this->random_winner[0]->jmeno,
+            $this->random_winner[0]->prijmeni,
+            $this->random_winner[0]->telefon,
+            $this->random_winner[0]->email,
+            $this->random_winner[0]->psc,
+            $this->random_winner[0]->datum_nakupu,
+            $this->random_winner[0]->cas_nakupu,
+            $this->random_winner[0]->cena_nakupu,
+            $this->random_winner[0]->cas_plneni
         );
     }
 
@@ -643,34 +441,10 @@ class Update
     public function sendTransactionMails()
     {
         //Здесь будут отправляться транзакционные имэйлы
-        $this->api->sendTransactionalEmail(
-            array(
-                'template_id' => $this->template_id,
-                'subject' => 'Vyhral\a jste ' . $this->vyhra,
-                'from_name' => get_option('blogname'),
-                'from_email' => get_option('admin_email'),
-                'reply_to' => get_option('admin_email'),
-                'email' => $this->email,
-                'name' => $this->name . ' ' . $this->surname,
-                'name' => 'text',
-                'content' => $this->vyhra_mail . "<br>Váš odkaz:" . get_option('siteurl') . "/index.php/" . $this->shortToken
-                //            'content' => $this->vyhra_mail . "<br>Váš odkaz:" . get_option('siteurl') . "/index.php/" . $this->shortToken . $this->name . $this->shortToken . $this->surname . $this->shortToken . $this->kontakt_id . $this->shortToken
-            ),
-            TRUE,
-            TRUE
-        );
+        apisendTransactionEmail($this->api, $this->template_id, $this->vyhra, $this->email, $this->name, $this->surname, $this->vyhra_mail, $this->shortToken);
 
         if (!empty($this->template_id)) {
-            $this->vitez->sendTransactionEmail(array(
-                'competition_type' => $this->competition_type,
-                'kontakt_id' => $this->kontakt_id,
-                'jmeno' => $this->name,
-                'prijmeni' => $this->surname,
-                'vyhra' => $this->vyhra,
-                //                'link' => get_option('siteurl') . "/index.php/" . $this->shortToken . $this->name . $this->shortToken . $this->surname . $this->shortToken . $this->kontakt_id . $this->shortToken, //Менять в  зависимости от прописанного порядка в "post_name". get_option('siteurl') и "/index.php" не удалять!!!
-                'link' => get_option('siteurl') . "/index.php/" . $this->shortToken, //Менять в  зависимости от прописанного порядка в "post_name". get_option('siteurl') и "/index.php" не удалять!!!
-                'checkbox_column' => '',
-            ));
+            vitezSendTransactionEmail($this->vitez, $this->competition_type, $this->kontakt_id, $this->name, $this->surname, $this->vyhra, $this->shortToken);
         } else {
             echo "template_id chybí. Přidat mužete v položce menu Maily";
         }
@@ -678,14 +452,8 @@ class Update
 
     public function changeQuantityOfCompetition()
     {
-        global $wpdb;
-        $field_name = 'quantity';
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name WHERE competition_type = '$this->competition_type'");
-        $new_value = $current_value - 1;
-
-        // Обновляем базу данных с новым значением $new_value
-        $wpdb->update($this->table_name, array($field_name => $new_value), array($field_name => $current_value, 'competition_type' => $this->competition_type));
-
+        $new_value = getNewValue($this->competition_type);
+        updateQuantityInAktivnySoutezi($this->competition_type);
         // Если $new_value равен 0, выводим сообщение
         if ($new_value < 1) {
             echo "No more mails.";
@@ -696,39 +464,14 @@ class Update
     public function sendDaysTransactionMails($competition_type, $template_id, $vyhra, $jmeno, $prijmeni, $email)
     {
         global $wpdb;
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM {$this->table_name_denni} WHERE competition_type = '{$this->competition_type}'");
-        $vyhra_mail = $wpdb->get_var("SELECT template FROM {$this->table_name_days_mails} WHERE denni_competition_id = '{$denni_competition_id}'");
-        $query = $wpdb->prepare("SELECT kontakt_id FROM {$this->table_name_8} WHERE jmeno = %s AND prijmeni = %s AND email = %s", $jmeno, $prijmeni, $email);
-        $kontakt_id = $wpdb->get_var($query);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($competition_type);
+        $vyhra_mail = selectTemplateFromTypSoutezeDaysMails($denni_competition_id);
+        $kontakt_id = selectKontaktIdFromKontaktniUdajeDenni($jmeno, $prijmeni, $email);
         //Здесь будут отправляться транзакционные имэйлы
-        $this->api->sendTransactionalEmail(
-            array(
-                'template_id' => $template_id,
-                'subject' => 'Vyhral\a jste ' . $vyhra, //добавить новую базу данных по типу
-                'from_name' => get_option('blogname'),
-                'from_email' => get_option('admin_email'),
-                'reply_to' => get_option('admin_email'),
-                'email' => $email,
-                'name' => $jmeno . ' ' . $prijmeni,
-                'name' => 'text',
-                //            'content' => $vyhra_mail . "<br>Váš odkaz:" . get_option('siteurl') . "/index.php" . "/my-page-" . $jmeno . $prijmeni . $kontakt_id . $this->shortToken
-                'content' => $vyhra_mail . "<br>Váš odkaz:" . get_option('siteurl') . "/index.php/" . $this->shortToken
-            ),
-            TRUE,
-            TRUE
-        );
+        apisendTransactionEmail($this->api, $template_id, $vyhra, $email, $jmeno, $prijmeni, $vyhra_mail, $this->shortToken);
 
         if (!empty($template_id)) {
-            $this->vitez->sendDaysTransactionEmail(array(
-                'competition_type' => $competition_type,
-                'kontakt_id' => $kontakt_id,
-                'jmeno' => $jmeno,
-                'prijmeni' => $prijmeni,
-                'vyhra' => $vyhra,
-                'link' => get_option('siteurl') . "/index.php/" . $this->shortToken, //Менять в  зависимости от прописанного порядка в "post_name". get_option('siteurl') и "/index.php" не удалять!!!
-                //                'link' => get_option('siteurl') . "/index.php" . "/my-page-" . $jmeno . $prijmeni . $kontakt_id . $this->shortToken, //Менять в  зависимости от прописанного порядка в "post_name". get_option('siteurl') и "/index.php" не удалять!!!
-                'checkbox_column' => '',
-            ));
+            vitezSendTransactionEmail($this->vitez, $competition_type, $kontakt_id, $jmeno, $prijmeni, $vyhra, $this->shortToken);
         } else {
             echo "template_id chybí. Přidat mužete v položce menu Maily";
         }
@@ -736,19 +479,16 @@ class Update
 
     public function changeQuantityOfDaysCompetition()
     {
-        global $wpdb;
-        $field_name = 'quantity';
-        $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition2()
@@ -756,16 +496,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity2';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi2($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition3()
@@ -773,16 +513,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity3';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi3($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition4()
@@ -790,16 +530,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity4';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi4($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition5()
@@ -807,16 +547,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity5';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi5($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition6()
@@ -824,16 +564,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity6';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi6($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition7()
@@ -841,16 +581,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity7';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi7($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition8()
@@ -858,16 +598,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity8';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni'));
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
+        updateQuantityAndTotalQuantityIntoDenniSoutezi8($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition9()
@@ -875,16 +615,16 @@ class Update
         global $wpdb;
         $field_name = 'quantity9';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi9($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     public function changeQuantityOfDaysCompetition10()
@@ -892,52 +632,28 @@ class Update
         global $wpdb;
         $field_name = 'quantity10';
         $field_name_total = 'total_quantity';
-        $denni_competition_id = $wpdb->get_var("SELECT denni_competition_id FROM $this->table_name_denni WHERE competition_type = '{$this->competition_type}'");
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
         //        $current_value = $wpdb->get_var( "SELECT $field_name FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
         //        $current_value_total = $wpdb->get_var( "SELECT $field_name_total FROM $this->table_name_denni WHERE nameof = 'denni'" );
-        $current_value_total = $wpdb->get_var("SELECT $field_name_total FROM $this->table_name_denni WHERE denni_competition_id = '$denni_competition_id'");
+        $current_value_total = selectTotalQuantityFromDenniSoutezi($denni_competition_id);
         $new_value = $current_value - 1;
         $another_value = $current_value_total - 1;
 
         //        $wpdb->update( $this->table_name_denni, array( $field_name => $new_value, $field_name_total => $another_value ), array( $field_name => $current_value, $field_name_total => $current_value_total, 'nameof' => 'denni' ) );
-        $wpdb->update($this->table_name_denni, array($field_name => $new_value, $field_name_total => $another_value), array($field_name => $current_value, $field_name_total => $current_value_total, 'denni_competition_id' => $denni_competition_id));
+        updateQuantityAndTotalQuantityIntoDenniSoutezi10($denni_competition_id, $new_value, $another_value, $current_value, $current_value_total);
     }
 
     //Losování menu function
     public function sendMainTransactionMails($template_id, $main_competition_id)
     {
         global $wpdb;
-        $vyhra_hlavni_mail = $wpdb->get_var("SELECT template FROM {$this->table_name_main_mails} WHERE main_competition_id = {$main_competition_id}");
+        $vyhra_hlavni_mail = selectTemplateFromTypSoutezeMainMails($main_competition_id);
         //Здесь будут отправляться транзакционные имэйлы
-        $this->api->sendTransactionalEmail(
-            array(
-                'template_id' => $template_id,
-                'subject' => 'Vyhral\a jste ' . $this->vyhra_hlavni,
-                'from_name' => get_option('blogname'),
-                'from_email' => get_option('admin_email'),
-                'reply_to' => get_option('admin_email'),
-                'email' => $this->main_email,
-                'name' => $this->main_name . ' ' . $this->main_surname,
-                'name' => 'text',
-                //            'content' => $vyhra_hlavni_mail . "<br>Váš odkaz:" . get_option('siteurl') . "/index.php" . "/my-page-" . $this->main_name . '-' . $this->main_surname . '-' . $this->main_kontakt_id
-                'content' => $vyhra_hlavni_mail . "<br>Váš odkaz:" . get_option('siteurl') . "/index.php/" . $this->shortToken
-            ),
-            TRUE,
-            TRUE
-        );
+        apisendTransactionEmailMain($this->api, $template_id, $this->vyhra_hlavni, $this->main_email, $this->main_name, $this->main_surname, $vyhra_hlavni_mail, $this->shortToken);
 
         if (!empty($template_id)) {
-            $this->vitez->sendMainTransactionEmail(array(
-                'competition_type' => $this->competition_type,
-                'kontakt_id' => $this->main_kontakt_id,
-                'jmeno' => $this->main_name,
-                'prijmeni' => $this->main_surname,
-                'vyhra' => $this->vyhra_hlavni,
-                'link' => get_option('siteurl') . "/index.php/" . $this->shortToken, //Менять в  зависимости от прописанного порядка в "post_name". get_option('siteurl') и "/index.php" не удалять!!!
-                //                'link' => get_option('siteurl') . "/index.php" . "/my-page-" . $this->main_name . '-' . $this->main_surname . '-' . $this->main_kontakt_id, //Менять в  зависимости от прописанного порядка в "post_name". get_option('siteurl') и "/index.php" не удалять!!!
-                'checkbox_column' => '',
-            ));
+            vitezSendTransactionEmailMain($this->vitez, $this->competition_type, $this->main_kontakt_id, $this->main_name, $this->main_surname, $this->vyhra_hlavni, $this->shortToken);
         } else {
             echo "template_id chybí. Přidat mužete v položce menu Maily";
         }
@@ -945,12 +661,7 @@ class Update
 
     public function changeQuantityOfMainCompetition()
     {
-        global $wpdb;
-        $field_name = 'quantity';
-        $current_value = $wpdb->get_var("SELECT $field_name FROM $this->table_name_hlavni WHERE competition_type = '$this->competition_type'");
-        $new_value = $current_value - 1;
-
-        $wpdb->update($this->table_name_hlavni, array($field_name => $new_value), array($field_name => $current_value, 'competition_type' => $this->competition_type));
+        selectQuantityFromHlavniSoutezi($this->competition_type);
     }
 
     //Losování menu function
@@ -958,7 +669,7 @@ class Update
     {
         global $wpdb;
         if (!empty($this->template_id)) {
-            $wpdb->delete($this->table_name_5, array('competition_type' => $this->competition_type));
+            deleteCompetitionTypeFromTypSouteze($this->competition_type);
         }
     }
 
@@ -967,7 +678,7 @@ class Update
     {
         global $wpdb;
         if (!empty($template_id)) {
-            $wpdb->delete($this->table_name_denni, array('competition_type' => $this->competition_type));
+            deleteCompetitionTypeFromDenniSouteze($this->competition_type);
         } //продолжить
     }
 
@@ -976,7 +687,7 @@ class Update
     {
         global $wpdb;
         if (!empty($template_id)) {
-            $wpdb->delete($this->table_name_hlavni, array('nameof' => 'hlavni'));
+            deleteHlavniFromHlavniSouteze();
         } //продолжить
     }
 
@@ -1049,9 +760,7 @@ class Update
 
     public function createDaysPageWithEndpoint($competition_type, $jmeno, $prijmeni, $email, $vyhra)
     {
-        global $wpdb;
-        $query = $wpdb->prepare("SELECT kontakt_id FROM {$this->table_name_winner_copie} WHERE jmeno = %s AND prijmeni = %s AND email = %s", $jmeno, $prijmeni, $email);
-        $kontakt_id = $wpdb->get_var($query);
+        $kontakt_id = selectKontaktIdFromKontaktniUdajeVitezeCopie($jmeno, $prijmeni, $email);
 
         //        $PageGuid = get_option('siteurl') . "/index.php" . "/my-page-" . $jmeno . $prijmeni . $kontakt_id . $this->shortToken;
         $PageGuid = get_option('siteurl') . "/index.php/" . $this->shortToken;
