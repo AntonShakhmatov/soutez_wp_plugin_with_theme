@@ -7,10 +7,13 @@ require_once 'email_functions.php';
 
 class Geo
 {
+    private $kontakt_id;
+    private $table_name;
     private $geo_link;
     private $email;
     private $name;
     private $surname;
+    private $api_key;
     private $api;
     private $confirmation;
     public function __construct($kontakt_id, $geo_link)
