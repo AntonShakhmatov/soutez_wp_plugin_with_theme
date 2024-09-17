@@ -1,16 +1,13 @@
 <?php
 
+require_once 'db_functions.php';
+
 //Účtenky menu
 function my_contest_subpage_uctenky()
 {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'uctenka_viteze';
-    $winners = $wpdb->get_results(
-        "
-        SELECT *
-        FROM $table_name
-        "
-    );
+
+    $winners = selectAllFromUctenkaViteze();
+
     echo "<form method='post' action=''>";
     echo "<table style='padding-top:3vh; padding-left:10vh;'>";
     echo "<tr>

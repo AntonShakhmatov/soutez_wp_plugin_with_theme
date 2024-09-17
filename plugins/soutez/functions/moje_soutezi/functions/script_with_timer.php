@@ -5,22 +5,22 @@ require_once('form_functions.php');
 require_once('display_functions.php');
 
 //Typ soutěže s časomírou
-if($competition_types){
+if ($competition_types) {
     processForm();
 }
 
 ?>
 <div class="wrap">
-<h1>Nastavit datu provedeni</h1>
+    <h1>Nastavit datu provedeni</h1>
     <form method="post" action="">
         <table class="form-table">
-        <tr>
+            <tr>
                 <th scope="row"><label for="competition_type">Typ soutěže</label></th>
                 <td>
                     <select name="selected_type" id="selected_type">
                         <?php
-                            $selected_types = getSelectedTypes();
-                            foreach ($selected_types as $selected_type) : ?>
+                        $selected_types = getSelectedTypes();
+                        foreach ($selected_types as $selected_type) : ?>
                             <option value="<?php echo $selected_type->competition_type; ?>"><?php echo $selected_type->competition_type; ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -41,12 +41,13 @@ if($competition_types){
             displayWeeksCompetitionsTable($competitions)
             ?>
         </table>
-        <div class = "flex" style = "display: flex; width: 100%; justify-content: center;">
-<!--        --><?php //submit_button("Ulozit"); ?>
+        <div class="flex" style="display: flex; width: 100%; justify-content: center;">
+            <!--        --><?php //submit_button("Ulozit"); 
+                            ?>
             <?php submit_button("Ulozit", "primary", "submit", false, array('style' => 'margin: auto;')); ?>
-<!--        --><?php //submit_button("Vymazat"); ?>
+            <!--        --><?php //submit_button("Vymazat"); 
+                            ?>
             <?php submit_button("Vymazat", "primary", "submit", false, array('style' => 'margin: auto; background: red')); ?>
         </div>
     </form>
 </div>
-<?php

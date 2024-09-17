@@ -307,7 +307,7 @@ function selectAllFromPrizeDraw($competition_type)
     return $existing_prize;
 }
 
-function selectAllFromAktivnySoutezi($competition_type)
+function selectAllFromAktivnySouteziUpdate($competition_type)
 {
     global $wpdb;
     $table_name = $wpdb->prefix . 'aktivny_soutezi';
@@ -392,7 +392,7 @@ function updateCompetitionTypeInAktivnySoutezi($quantity, $vyhra, $competition_t
     return $update;
 }
 
-function selectAllFromDenniSoutezi($competition_type)
+function selectAllFromDenniSouteziUpdate($competition_type)
 {
     global $wpdb;
     $table_name_denni = $wpdb->prefix . 'denni_soutezi';
@@ -458,7 +458,7 @@ function insertActiveCompetitionIdCompetitionTypeCompetitionNameZacatekKonecInDe
     return $insert;
 }
 
-function selectAllFromHlavniSoutezi($competition_type)
+function selectAllFromHlavniSouteziUpdate($competition_type)
 {
     global $wpdb;
     $table_name_hlavni = $wpdb->prefix . 'hlavni_soutezi';
@@ -794,7 +794,7 @@ function updateQuantityInAktivnySoutezi($competition_type)
     return $update;
 }
 
-function selectDenniCompetitionIdFromDenniSoutezi($competition_type)
+function selectDenniCompetitionIdFromDenniSouteziUpdate($competition_type)
 {
     global $wpdb;
     $table_name_denni = $wpdb->prefix . 'denni_soutezi';

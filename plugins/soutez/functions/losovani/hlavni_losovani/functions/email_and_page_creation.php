@@ -3,11 +3,15 @@
 function emailMainFunctions($competition_type, $update)
 {
     if (isset($_POST['action']) && $_POST['action'] == 'update_db' && $_POST['competition_type'] == $competition_type->competition_type) {
+
         $main_competition_id = getMainCompetitionId($competition_type);
+
         $template_id = getMainTemplateId($main_competition_id);
+
         $quantity = getQuantityMain($competition_type);
 
         $maxCompetitionDate = getMaxDate();
+
         $currentDateTime = date('Y-m-d H:i:s');
 
         if ($currentDateTime > $maxCompetitionDate) {
@@ -24,7 +28,6 @@ function emailMainFunctions($competition_type, $update)
                 }
             }
             $update->createMainPageWithEndpoint();
-            //    break;
         } else {
             echo "The time has not come yet";
         }

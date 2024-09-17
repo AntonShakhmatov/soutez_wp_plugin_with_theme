@@ -5,9 +5,11 @@ require_once('html_functions.php');
 require_once('email_and_page_creation.php');
 
 $lastDayOfCompetition = getLastDayOfCompetition();
+
 $competition_types = getCompetitionMainTypes($lastDayOfCompetition);
 
 foreach ($competition_types as $competition_type) {
+
     $update = new Update($competition_type->competition_type);
 
     if ($competition_type) {
@@ -20,8 +22,10 @@ foreach ($competition_types as $competition_type) {
         } else {
             // Zde bude aktualizace databáze
             $update->updateDatabaseHlavni();
+
             // Máme obnovit seznam ještě jednou pro synchronizaci
             $viteze_po_obnoveni = getMainWinnerAfterRefresh($competition_type);
+
             getHtmlTableForMain($viteze_po_obnoveni, $competition_type);
 
             emailMainFunctions($competition_type, $update);

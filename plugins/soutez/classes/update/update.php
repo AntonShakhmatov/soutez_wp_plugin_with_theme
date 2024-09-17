@@ -133,7 +133,7 @@ class Update
 
         $existing_prize = selectAllFromPrizeDraw($this->competition_type);
 
-        $existing_competition = selectAllFromAktivnySoutezi($this->competition_type);
+        $existing_competition = selectAllFromAktivnySouteziUpdate($this->competition_type);
 
         $existing_vyhra = selectVyhraFromAltivnySoutezi($this->competition_type);
 
@@ -188,7 +188,7 @@ class Update
 
     public function divideByDayTime()
     {
-        $existing_denni_record = selectAllFromDenniSoutezi($this->competition_type);
+        $existing_denni_record = selectAllFromDenniSouteziUpdate($this->competition_type);
 
         $zahajeni = selectZacatekFromAktivnySoutezi($this->competition_type);
 
@@ -228,7 +228,7 @@ class Update
 
     public function divideByAllTime()
     {
-        $existing_hlavni_record = selectAllFromHlavniSoutezi($this->competition_type);
+        $existing_hlavni_record = selectAllFromHlavniSouteziUpdate($this->competition_type);
 
         // Составление SQL-запроса для выбора самого первого значения из поля 'zacatek' и самого последнего значения из поля 'konec'
         $result = selectMinZacatekFromAktivnySoutezi($this->competition_type);
@@ -565,7 +565,7 @@ class Update
     //Losování menu function
     public function sendDaysTransactionMails($competition_type, $template_id, $vyhra, $jmeno, $prijmeni, $email)
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($competition_type);
 
         $vyhra_mail = selectTemplateFromTypSoutezeDaysMails($denni_competition_id);
 
@@ -600,7 +600,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -621,7 +621,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition2()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -642,7 +642,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition3()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -663,7 +663,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition4()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -684,7 +684,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition5()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -705,7 +705,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition6()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -726,7 +726,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition7()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -747,7 +747,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition8()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -768,7 +768,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition9()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 
@@ -789,7 +789,7 @@ class Update
 
     public function changeQuantityOfDaysCompetition10()
     {
-        $denni_competition_id = selectDenniCompetitionIdFromDenniSoutezi($this->competition_type);
+        $denni_competition_id = selectDenniCompetitionIdFromDenniSouteziUpdate($this->competition_type);
 
         $current_value = selectQuantityFromDenniSoutezi($denni_competition_id);
 

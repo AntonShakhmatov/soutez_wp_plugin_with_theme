@@ -1,16 +1,11 @@
 <?php
 
+require_once 'db_functions.php';
+
 //Přehled menu
 function my_contest_page_vsichni()
 {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'kontaktni_udaje';
-    $subscribers = $wpdb->get_results(
-        "
-        SELECT *
-        FROM $table_name
-        "
-    );
+    $subscribers = selectAllFromKontaktniUdaje();
     echo "<table style = 'padding-top:3vh; padding-left:10vh;'>";
     echo "<tr>
     <th style = 'padding:1vh;'>Jmeno</th>
